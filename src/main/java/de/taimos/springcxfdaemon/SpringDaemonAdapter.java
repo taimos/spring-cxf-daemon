@@ -43,7 +43,8 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 		
 		try {
 			SpringDaemonAdapter.context = this.createSpringContext();
-			SpringDaemonAdapter.context.getEnvironment().setActiveProfiles(System.getProperty(Configuration.PROFILES, "prod").split(","));
+			String[] profiles = System.getProperty(Configuration.PROFILES, Configuration.PROFILES_PRODUCTION).split(",");
+			SpringDaemonAdapter.context.getEnvironment().setActiveProfiles(profiles);
 			
 			final PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
 			configurer.setProperties(DaemonStarter.getDaemonProperties());
