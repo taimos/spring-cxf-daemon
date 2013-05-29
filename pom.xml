@@ -10,10 +10,28 @@
 	<artifactId>spring-cxf-daemon</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<name>Daemon with Spring and CXF</name>
+	<inceptionYear>2013</inceptionYear>
 	<organization>
 		<name>Taimos GmbH</name>
 		<url>http://www.taimos.de</url>
 	</organization>
+	<developers>
+		<developer>
+			<id>thoeger</id>
+			<email>thorsten.hoeger@taimos.de</email>
+			<name>Thorsten Hoeger</name>
+			<organization>Taimos GmbH</organization>
+			<organizationUrl>http://www.taimos.de</organizationUrl>
+			<timezone>+1</timezone>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<org.springframework.version>3.2.3.RELEASE</org.springframework.version>
@@ -31,7 +49,6 @@
 		<maven>3.0.0</maven>
 	</prerequisites>
 	<build>
-		<finalName>${project.groupId}.${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
