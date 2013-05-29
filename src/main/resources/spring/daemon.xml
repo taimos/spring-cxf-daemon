@@ -14,12 +14,13 @@
 	<bean id="exMapper" class="org.apache.cxf.jaxrs.impl.WebApplicationExceptionMapper">
 		<property name="printStackTrace" value="false" />
 	</bean>
+	<bean id="jsonProvider" class="de.taimos.springcxfdaemon.JacksonProvider" />
 	<bean id="objectMapper" class="de.taimos.springcxfdaemon.MapperFactory" factory-method="createDefault" />
-	<bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider">
-		<constructor-arg>
-			<ref bean="objectMapper" />
-		</constructor-arg>
-	</bean>
+	<!-- <bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"> -->
+	<!-- <constructor-arg> -->
+	<!-- <ref bean="objectMapper" /> -->
+	<!-- </constructor-arg> -->
+	<!-- </bean> -->
 
 	<!-- Auto scan the components -->
 	<context:component-scan base-package="${servicePackage}" />
