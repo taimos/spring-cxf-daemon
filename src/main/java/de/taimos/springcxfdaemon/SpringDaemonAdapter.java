@@ -34,19 +34,34 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 	
 	@Override
 	public boolean doStart() {
-		this.doBeforeSpringStart();
+		try {
+			this.doBeforeSpringStart();
+		} catch (Exception e) {
+			this.logger.error("Before spring failed", e);
+			return false;
+		}
 		
-		SpringDaemonAdapter.context = this.createSpringContext();
-		SpringDaemonAdapter.context.getEnvironment().setActiveProfiles(System.getProperty(Configuration.PROFILES, "prod").split(","));
+		try {
+			SpringDaemonAdapter.context = this.createSpringContext();
+			SpringDaemonAdapter.context.getEnvironment().setActiveProfiles(System.getProperty(Configuration.PROFILES, "prod").split(","));
+			
+			final PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
+			configurer.setProperties(DaemonStarter.getDaemonProperties());
+			SpringDaemonAdapter.context.addBeanFactoryPostProcessor(configurer);
+			
+			SpringDaemonAdapter.context.setConfigLocation(this.getSpringResource());
+			SpringDaemonAdapter.context.refresh();
+		} catch (Exception e) {
+			this.logger.error("Spring context failed", e);
+			return false;
+		}
 		
-		final PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
-		configurer.setProperties(DaemonStarter.getDaemonProperties());
-		SpringDaemonAdapter.context.addBeanFactoryPostProcessor(configurer);
-		
-		SpringDaemonAdapter.context.setConfigLocation(this.getSpringResource());
-		SpringDaemonAdapter.context.refresh();
-		
-		this.doAfterSpringStart();
+		try {
+			this.doAfterSpringStart();
+		} catch (Exception e) {
+			this.logger.error("After spring failed", e);
+			return false;
+		}
 		return super.doStart();
 	}
 	
@@ -89,9 +104,24 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 	
 	@Override
 	public boolean doStop() {
-		this.doBeforeSpringStop();
-		SpringDaemonAdapter.context.stop();
-		this.doAfterSpringStop();
+		try {
+			this.doBeforeSpringStop();
+		} catch (Exception e) {
+			this.logger.error("Before spring stop failed", e);
+			return false;
+		}
+		try {
+			SpringDaemonAdapter.context.stop();
+		} catch (Exception e) {
+			this.logger.error("spring stop failed", e);
+			return false;
+		}
+		try {
+			this.doAfterSpringStop();
+		} catch (Exception e) {
+			this.logger.error("After spring stop failed", e);
+			return false;
+		}
 		return super.doStart();
 	}
 	
