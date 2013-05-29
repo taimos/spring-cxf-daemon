@@ -87,7 +87,11 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 	@Override
 	public Map<String, String> loadProperties() {
 		try {
-			return DaemonLifecycleAdapter.loadPropertiesFile(this.getConfigFile());
+			Map<String, String> props = DaemonLifecycleAdapter.loadPropertiesFile(this.getConfigFile());
+			if (System.getProperty(Configuration.SERVICE_PACKAGE) == null) {
+				props.put(Configuration.SERVICE_PACKAGE, this.getClass().getPackage().getName());
+			}
+			return props;
 		} catch (final Exception e) {
 			this.logger.error("Error loading properties", e);
 		}
