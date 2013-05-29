@@ -19,6 +19,10 @@ public abstract class SpringTest {
 	private AbstractXmlApplicationContext context;
 	
 	
+	public AbstractXmlApplicationContext getContext() {
+		return this.context;
+	}
+	
 	public void start() {
 		try {
 			this.doBeforeSpringStart();
