@@ -81,7 +81,7 @@ public abstract class SpringTest {
 		return "spring-test/beans.xml";
 	}
 	
-	public void doStop() {
+	public void stop() {
 		try {
 			this.doBeforeSpringStop();
 		} catch (Exception e) {
