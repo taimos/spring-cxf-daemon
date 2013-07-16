@@ -37,7 +37,7 @@
 		<org.springframework.version>3.2.3.RELEASE</org.springframework.version>
 		<cxf.version>2.7.5</cxf.version>
 		<jetty.version>8.1.7.v20120910</jetty.version>
-		<jackson.version>2.2.1</jackson.version>
+		<jackson.version>2.2.2</jackson.version>
 		<joda.time.version>2.2</joda.time.version>
 	</properties>
 	<scm>
@@ -75,7 +75,7 @@
 		<dependency>
 			<groupId>de.taimos</groupId>
 			<artifactId>daemon-framework</artifactId>
-			<version>1.1.0</version>
+			<version>1.1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.restdoc</groupId>
