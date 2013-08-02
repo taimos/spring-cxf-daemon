@@ -36,6 +36,7 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 /**
  * Copyright 2013 Taimos<br>
@@ -81,7 +82,10 @@ public class JacksonProvider implements MessageBodyReader<Object>, MessageBodyWr
 	
 	@Override
 	public Object readFrom(Class<Object> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException, WebApplicationException {
-		return this.mapper.readValue(entityStream, type);
+		if (genericType.equals(null)) {
+			return this.mapper.readValue(entityStream, type);
+		}
+		return this.mapper.readValue(entityStream, TypeFactory.defaultInstance().constructType(genericType));
 	}
 	
 }
