@@ -7,7 +7,7 @@
 	</parent>
 	<groupId>de.taimos</groupId>
 	<artifactId>spring-cxf-daemon</artifactId>
-	<version>1.2.0</version>
+	<version>1.2.1-SNAPSHOT</version>
 	<name>Daemon with Spring and CXF</name>
 	<inceptionYear>2013</inceptionYear>
 	<organization>
