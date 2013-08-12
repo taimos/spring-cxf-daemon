@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
@@ -7,7 +8,7 @@
 	</parent>
 	<groupId>de.taimos</groupId>
 	<artifactId>spring-cxf-daemon</artifactId>
-	<version>1.2.0</version>
+	<version>1.2.0-SNAPSHOT</version>
 	<name>Daemon with Spring and CXF</name>
 	<inceptionYear>2013</inceptionYear>
 	<organization>
@@ -43,8 +44,8 @@
 		<connection>scm:git:git@github.com:taimos/spring-cxf-daemon.git</connection>
 		<developerConnection>scm:git:git@github.com:taimos/spring-cxf-daemon.git</developerConnection>
 		<url>scm:git:git@github.com:taimos/spring-cxf-daemon.git</url>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 	<prerequisites>
 		<maven>3.0.0</maven>
 	</prerequisites>
@@ -64,8 +65,7 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
 					<goals>deploy nexus-staging:release</goals>
-					<scmCommentPrefix>[maven-release-plugin]</scmCommentPrefix>
-					<tag>v@{project.version}</tag>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
 				</configuration>
 			</plugin>
 			<plugin>
