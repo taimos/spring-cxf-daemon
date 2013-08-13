@@ -4,13 +4,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import com.google.common.collect.Maps;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+
+import com.google.common.collect.Maps;
 
 public abstract class SpringTest {
 	
@@ -110,7 +110,7 @@ public abstract class SpringTest {
 		Map<String, String> props = Maps.newHashMap();
 		props.put("serviceName", this.getServiceName());
 		this.fillProperties(props);
-		if (System.getProperty(Configuration.SERVICE_PACKAGE) == null) {
+		if (!props.containsKey(Configuration.SERVICE_PACKAGE)) {
 			props.put(Configuration.SERVICE_PACKAGE, this.getClass().getPackage().getName());
 		}
 		
