@@ -8,6 +8,9 @@ import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.PatternLayout;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
@@ -29,6 +32,18 @@ public class SpringDaemonTestRunner extends BlockJUnit4ClassRunner {
 	 */
 	public SpringDaemonTestRunner(Class<?> klass) throws InitializationError {
 		super(klass);
+		this.configureLogging();
+	}
+	
+	private void configureLogging() {
+		org.apache.log4j.Logger.getRootLogger().removeAllAppenders();
+		final ConsoleAppender console = new ConsoleAppender();
+		console.setName("CONSOLE");
+		console.setLayout(new PatternLayout("%d{HH:mm:ss,SSS} %-5p %c %x - %m%n"));
+		console.setTarget(ConsoleAppender.SYSTEM_OUT);
+		console.activateOptions();
+		org.apache.log4j.Logger.getRootLogger().addAppender(console);
+		org.apache.log4j.Logger.getRootLogger().setLevel(Level.INFO);
 	}
 	
 	@Override
@@ -135,7 +150,6 @@ public class SpringDaemonTestRunner extends BlockJUnit4ClassRunner {
 		 * @param value the prop value
 		 */
 		protected void addProperty(final String key, final String value) {
-			System.out.println(String.format("Setting property: '%s' with value '%s'", key.trim(), value));
 			this.props.setProperty(key.trim(), value);
 		}
 		
