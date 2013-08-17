@@ -14,6 +14,7 @@
 		<property name="printStackTrace" value="false" />
 	</bean>
 	<bean id="jsonProvider" class="de.taimos.springcxfdaemon.JacksonProvider" />
+	<bean id="jacksonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider" />
 	<bean id="objectMapper" class="de.taimos.springcxfdaemon.MapperFactory" factory-method="createDefault" />
 
 	<!-- Auto scan the components -->
