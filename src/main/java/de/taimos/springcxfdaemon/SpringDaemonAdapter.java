@@ -13,8 +13,6 @@ package de.taimos.springcxfdaemon;
 
 import java.util.Map;
 
-import com.google.common.collect.Maps;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -24,6 +22,8 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import de.taimos.daemon.DaemonLifecycleAdapter;
 import de.taimos.daemon.DaemonStarter;
+import de.taimos.daemon.properties.FilePropertyProvider;
+import de.taimos.daemon.properties.IPropertyProvider;
 
 public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 	
@@ -96,11 +96,9 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 		return "spring/beans.xml";
 	}
 	
-	/**
-	 * @return the name of the config file
-	 */
-	protected String getConfigFile() {
-		return "core.properties";
+	@Override
+	public IPropertyProvider getPropertyProvider() {
+		return new FilePropertyProvider("core.properties");
 	}
 	
 	@Override
@@ -128,16 +126,11 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 	
 	@Override
 	public Map<String, String> loadProperties() {
-		try {
-			Map<String, String> props = DaemonLifecycleAdapter.loadPropertiesFile(this.getConfigFile());
-			if (System.getProperty(Configuration.SERVICE_PACKAGE) == null) {
-				props.put(Configuration.SERVICE_PACKAGE, this.getClass().getPackage().getName());
-			}
-			return props;
-		} catch (final Exception e) {
-			this.logger.error("Error loading properties", e);
+		Map<String, String> props = this.getPropertyProvider().loadProperties();
+		if (System.getProperty(Configuration.SERVICE_PACKAGE) == null) {
+			props.put(Configuration.SERVICE_PACKAGE, this.getClass().getPackage().getName());
 		}
-		return Maps.newHashMap();
+		return props;
 	}
 	
 	/**
