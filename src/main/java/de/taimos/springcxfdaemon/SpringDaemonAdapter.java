@@ -22,8 +22,6 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import de.taimos.daemon.DaemonLifecycleAdapter;
 import de.taimos.daemon.DaemonStarter;
-import de.taimos.daemon.properties.FilePropertyProvider;
-import de.taimos.daemon.properties.IPropertyProvider;
 
 public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 	
@@ -94,11 +92,6 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 	 */
 	protected String getSpringResource() {
 		return "spring/beans.xml";
-	}
-	
-	@Override
-	public IPropertyProvider getPropertyProvider() {
-		return new FilePropertyProvider("core.properties");
 	}
 	
 	@Override
