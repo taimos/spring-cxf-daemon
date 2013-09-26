@@ -121,6 +121,7 @@ public class SpringDaemonTestRunner extends BlockJUnit4ClassRunner {
 					SpringDaemonTestRunner.springTest.start();
 				} catch (BeansException | IllegalStateException e) {
 					SpringDaemonTestRunner.logger.error("Starting Spring context failed", e);
+					throw new RuntimeException("Starting Spring context failed", e);
 				}
 				next.evaluate();
 			}

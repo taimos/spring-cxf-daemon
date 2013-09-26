@@ -31,12 +31,12 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 	
 	
 	@Override
-	public boolean doStart() {
+	public void doStart() throws Exception {
+		super.doStart();
 		try {
 			this.doBeforeSpringStart();
 		} catch (Exception e) {
-			this.logger.error("Before spring failed", e);
-			return false;
+			throw new RuntimeException("Before spring failed", e);
 		}
 		
 		try {
@@ -51,17 +51,14 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 			SpringDaemonAdapter.context.setConfigLocation(this.getSpringResource());
 			SpringDaemonAdapter.context.refresh();
 		} catch (Exception e) {
-			this.logger.error("Spring context failed", e);
-			return false;
+			throw new RuntimeException("Spring context failed", e);
 		}
 		
 		try {
 			this.doAfterSpringStart();
 		} catch (Exception e) {
-			this.logger.error("After spring failed", e);
-			return false;
+			throw new RuntimeException("After spring failed", e);
 		}
-		return super.doStart();
 	}
 	
 	protected void doAfterSpringStart() {
@@ -95,31 +92,28 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 	}
 	
 	@Override
-	public boolean doStop() {
+	public void doStop() throws Exception {
 		try {
 			this.doBeforeSpringStop();
 		} catch (Exception e) {
-			this.logger.error("Before spring stop failed", e);
-			return false;
+			throw new RuntimeException("Before spring stop failed", e);
 		}
 		try {
 			SpringDaemonAdapter.context.stop();
 		} catch (Exception e) {
-			this.logger.error("spring stop failed", e);
-			return false;
+			throw new RuntimeException("spring stop failed", e);
 		}
 		try {
 			this.doAfterSpringStop();
 		} catch (Exception e) {
-			this.logger.error("After spring stop failed", e);
-			return false;
+			throw new RuntimeException("After spring stop failed", e);
 		}
-		return super.doStart();
+		super.doStop();
 	}
 	
 	@Override
 	public Map<String, String> loadProperties() {
-		Map<String, String> props = this.getPropertyProvider().loadProperties();
+		Map<String, String> props = super.loadProperties();
 		if (System.getProperty(Configuration.SERVICE_PACKAGE) == null) {
 			props.put(Configuration.SERVICE_PACKAGE, this.getClass().getPackage().getName());
 		}
