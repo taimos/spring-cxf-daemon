@@ -100,6 +100,7 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 		}
 		try {
 			SpringDaemonAdapter.context.stop();
+			SpringDaemonAdapter.context.close();
 		} catch (Exception e) {
 			throw new RuntimeException("spring stop failed", e);
 		}

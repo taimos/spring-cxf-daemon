@@ -94,6 +94,7 @@ public abstract class SpringTest {
 		}
 		try {
 			this.context.stop();
+			this.context.close();
 		} catch (Exception e) {
 			this.logger.error("spring stop failed", e);
 			throw new RuntimeException(e);
