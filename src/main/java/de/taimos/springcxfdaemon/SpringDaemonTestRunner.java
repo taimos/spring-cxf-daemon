@@ -23,7 +23,7 @@ public class SpringDaemonTestRunner extends BlockJUnit4ClassRunner {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SpringDaemonTestRunner.class);
 	
-	private static SpringTest springTest;
+	private SpringTest springTest;
 	
 	
 	/**
@@ -66,7 +66,7 @@ public class SpringDaemonTestRunner extends BlockJUnit4ClassRunner {
 			@Override
 			public void evaluate() throws Throwable {
 				next.evaluate();
-				SpringDaemonTestRunner.springTest.stop();
+				SpringDaemonTestRunner.this.springTest.stop();
 			}
 		};
 	}
@@ -91,7 +91,7 @@ public class SpringDaemonTestRunner extends BlockJUnit4ClassRunner {
 				cfg.addProperty("profiles", "test");
 				cfg.addProperty("developmentMode", "true");
 				try {
-					SpringDaemonTestRunner.springTest = new SpringTest() {
+					SpringDaemonTestRunner.this.springTest = new SpringTest() {
 						
 						@Override
 						protected String getServiceName() {
@@ -103,6 +103,7 @@ public class SpringDaemonTestRunner extends BlockJUnit4ClassRunner {
 							String servicePackage = cfg.getServicePackage();
 							if (servicePackage != null) {
 								props.put(Configuration.SERVICE_PACKAGE, servicePackage);
+								System.setProperty(Configuration.SERVICE_PACKAGE, servicePackage);
 							}
 							
 							Enumeration<?> names = cfg.getProps().propertyNames();
@@ -118,19 +119,19 @@ public class SpringDaemonTestRunner extends BlockJUnit4ClassRunner {
 						}
 						
 					};
-					SpringDaemonTestRunner.springTest.start();
+					SpringDaemonTestRunner.this.springTest.start();
+					next.evaluate();
 				} catch (BeansException | IllegalStateException e) {
 					SpringDaemonTestRunner.logger.error("Starting Spring context failed", e);
 					throw new RuntimeException("Starting Spring context failed", e);
 				}
-				next.evaluate();
 			}
 		};
 	}
 	
 	@Override
 	protected Object createTest() throws Exception {
-		return SpringDaemonTestRunner.springTest.getContext().getBeanFactory().createBean(this.getTestClass().getJavaClass());
+		return this.springTest.getContext().getBeanFactory().createBean(this.getTestClass().getJavaClass());
 	}
 	
 	

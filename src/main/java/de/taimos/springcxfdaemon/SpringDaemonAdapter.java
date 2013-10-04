@@ -12,6 +12,10 @@ package de.taimos.springcxfdaemon;
  */
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +29,9 @@ import de.taimos.daemon.DaemonStarter;
 
 public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 	
-	private static AbstractXmlApplicationContext context;
+	private ReadWriteLock rwLock = new ReentrantReadWriteLock();
+	
+	private AtomicReference<AbstractXmlApplicationContext> context = new AtomicReference<>(null);
 	
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -39,19 +45,34 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 			throw new RuntimeException("Before spring failed", e);
 		}
 		
+		Lock writeLock = this.rwLock.writeLock();
+		AbstractXmlApplicationContext ctx = null;
 		try {
-			SpringDaemonAdapter.context = this.createSpringContext();
+			writeLock.lock();
+			if (this.context.get() != null) {
+				throw new RuntimeException("Already started");
+			}
+			ctx = this.createSpringContext();
 			String[] profiles = System.getProperty(Configuration.PROFILES, Configuration.PROFILES_PRODUCTION).split(",");
-			SpringDaemonAdapter.context.getEnvironment().setActiveProfiles(profiles);
+			ctx.getEnvironment().setActiveProfiles(profiles);
 			
 			final PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
 			configurer.setProperties(DaemonStarter.getDaemonProperties());
-			SpringDaemonAdapter.context.addBeanFactoryPostProcessor(configurer);
+			ctx.addBeanFactoryPostProcessor(configurer);
 			
-			SpringDaemonAdapter.context.setConfigLocation(this.getSpringResource());
-			SpringDaemonAdapter.context.refresh();
+			ctx.setConfigLocation(this.getSpringResource());
+			ctx.refresh();
 		} catch (Exception e) {
+			if (ctx != null) {
+				ctx.close();
+				ctx = null;
+			}
 			throw new RuntimeException("Spring context failed", e);
+		} finally {
+			if (ctx != null) {
+				this.context.set(ctx);
+			}
+			writeLock.unlock();
 		}
 		
 		try {
@@ -98,12 +119,21 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 		} catch (Exception e) {
 			throw new RuntimeException("Before spring stop failed", e);
 		}
+		Lock writeLock = this.rwLock.writeLock();
 		try {
-			SpringDaemonAdapter.context.stop();
-			SpringDaemonAdapter.context.close();
+			writeLock.lock();
+			if (this.context.get() == null) {
+				throw new RuntimeException("Not yet started");
+			}
+			this.context.get().stop();
+			this.context.get().close();
+			this.context.set(null);
 		} catch (Exception e) {
 			throw new RuntimeException("spring stop failed", e);
+		} finally {
+			writeLock.unlock();
 		}
+		
 		try {
 			this.doAfterSpringStop();
 		} catch (Exception e) {
@@ -124,8 +154,14 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 	/**
 	 * @return the Spring context
 	 */
-	public static ApplicationContext getContext() {
-		return SpringDaemonAdapter.context;
+	public ApplicationContext getContext() {
+		Lock readLock = this.rwLock.readLock();
+		try {
+			readLock.lock();
+			return this.context.get();
+		} finally {
+			readLock.unlock();
+		}
 	}
 	
 }
