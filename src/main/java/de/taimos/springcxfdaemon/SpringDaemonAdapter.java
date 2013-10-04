@@ -29,15 +29,15 @@ import de.taimos.daemon.DaemonStarter;
 
 public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 	
-	private ReadWriteLock rwLock = new ReentrantReadWriteLock();
+	private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
 	
-	private AtomicReference<AbstractXmlApplicationContext> context = new AtomicReference<>(null);
+	private final AtomicReference<AbstractXmlApplicationContext> context = new AtomicReference<>(null);
 	
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	
 	@Override
-	public void doStart() throws Exception {
+	public final void doStart() throws Exception {
 		super.doStart();
 		try {
 			this.doBeforeSpringStart();
@@ -113,7 +113,7 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 	}
 	
 	@Override
-	public void doStop() throws Exception {
+	public final void doStop() throws Exception {
 		try {
 			this.doBeforeSpringStop();
 		} catch (Exception e) {
@@ -154,7 +154,7 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 	/**
 	 * @return the Spring context
 	 */
-	public ApplicationContext getContext() {
+	public final ApplicationContext getContext() {
 		Lock readLock = this.rwLock.readLock();
 		try {
 			readLock.lock();
