@@ -32,6 +32,7 @@ public class SpringLockTest {
 		Assert.assertNull(adapter.getContext());
 		try {
 			adapter.doStop();
+			Assert.fail();
 		} catch (Exception e) {
 			Assert.assertEquals(RuntimeException.class, e.getClass());
 		}
