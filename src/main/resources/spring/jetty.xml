@@ -20,7 +20,7 @@
 			</httpj:connector>
 			<httpj:handlers>
 				<ref bean="web-server-context-static" />
-				<bean class="org.eclipse.jetty.server.handler.DefaultHandler" />
+				<bean class="${defaultHandlerClass:org.eclipse.jetty.server.handler.DefaultHandler}" />
 			</httpj:handlers>
 		</httpj:engine>
 	</httpj:engine-factory>
