@@ -78,14 +78,13 @@ public class SpringDaemonTestRunner extends BlockJUnit4ClassRunner {
 			
 			@Override
 			public void evaluate() throws Throwable {
-				final RunnerConfig cfg;
-				
-				if (!SpringDaemonTestRunner.this.getTestClass().getJavaClass().isAnnotationPresent(RunnerConfiguration.class)) {
+				final RunnerConfiguration cfgClass = this.findConfigAnnotation(SpringDaemonTestRunner.this.getTestClass().getJavaClass());
+				if (cfgClass == null) {
 					// Die on missing annotation
 					throw new RuntimeException("Missing @RunnerConfiguration");
 				}
 				
-				final RunnerConfiguration cfgClass = SpringDaemonTestRunner.this.getTestClass().getJavaClass().getAnnotation(RunnerConfiguration.class);
+				final RunnerConfig cfg;
 				cfg = cfgClass.config().newInstance();
 				cfg.addProperty("serviceName", cfgClass.svc());
 				cfg.addProperty("profiles", "test");
@@ -125,6 +124,17 @@ public class SpringDaemonTestRunner extends BlockJUnit4ClassRunner {
 					SpringDaemonTestRunner.logger.error("Starting Spring context failed", e);
 					throw new RuntimeException("Starting Spring context failed", e);
 				}
+			}
+			
+			private RunnerConfiguration findConfigAnnotation(Class<?> clazz) {
+				if (clazz == null) {
+					return null;
+				}
+				RunnerConfiguration cfgClass = clazz.getAnnotation(RunnerConfiguration.class);
+				if (cfgClass == null) {
+					cfgClass = this.findConfigAnnotation(clazz.getSuperclass());
+				}
+				return cfgClass;
 			}
 		};
 	}
