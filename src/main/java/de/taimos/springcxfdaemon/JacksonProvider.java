@@ -32,7 +32,6 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 /**
  * Copyright 2013 Taimos<br>
  * <br>
- * https://issues.apache.org/jira/browse/CXF-4996
  * 
  * @author hoegertn
  * 
