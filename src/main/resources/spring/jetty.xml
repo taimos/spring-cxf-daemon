@@ -11,8 +11,8 @@
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
 	<httpj:engine-factory id="cxf-engine" bus="cxf">
-		<httpj:engine port="${svc.port:8080}" sendServerVersion="false">
-			<httpj:threadingParameters minThreads="5" maxThreads="150" />
+		<httpj:engine port="${svc.port:8080}" sendServerVersion="${jetty.sendVersion:false}">
+			<httpj:threadingParameters minThreads="${jetty.minThreads:5}" maxThreads="${jetty.maxThreads:150}" />
 			<httpj:connector>
 				<bean class="org.eclipse.jetty.server.bio.SocketConnector">
 					<property name="port" value="${svc.port:8080}" />
@@ -22,6 +22,7 @@
 				<ref bean="web-server-context-static" />
 				<bean class="${defaultHandlerClass:org.eclipse.jetty.server.handler.DefaultHandler}" />
 			</httpj:handlers>
+			<httpj:sessionSupport>${jetty.sessions:false}</httpj:sessionSupport>
 		</httpj:engine>
 	</httpj:engine-factory>
 
