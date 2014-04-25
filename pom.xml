@@ -10,10 +10,10 @@
 	<name>Daemon with Spring and CXF</name>
 	<inceptionYear>2013</inceptionYear>
 	<properties>
-		<org.springframework.version>3.2.7.RELEASE</org.springframework.version>
-		<cxf.version>2.7.10</cxf.version>
+		<org.springframework.version>3.2.8.RELEASE</org.springframework.version>
+		<cxf.version>2.7.11</cxf.version>
 		<jetty.version>8.1.14.v20131031</jetty.version>
-		<jackson.version>2.3.1</jackson.version>
+		<jackson.version>2.3.3</jackson.version>
 		<joda.time.version>2.3</joda.time.version>
 	</properties>
 	<scm>
@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>16.0.1</version>
+			<version>17.0</version>
 		</dependency>
 		<dependency>
 			<groupId>joda-time</groupId>
