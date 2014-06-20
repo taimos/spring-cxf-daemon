@@ -3,9 +3,9 @@ package de.taimos.springcxfdaemon;
 /*
  * #%L Daemon with Spring and CXF %% Copyright (C) 2013 Taimos GmbH %% Licensed under the Apache License, Version 2.0 (the "License"); you
  * may not use this file except in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions
  * and limitations under the License. #L%
@@ -28,14 +28,14 @@ import de.taimos.daemon.DaemonLifecycleAdapter;
 import de.taimos.daemon.DaemonStarter;
 
 public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
-	
+
 	private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
-	
+
 	private final AtomicReference<AbstractXmlApplicationContext> context = new AtomicReference<>(null);
-	
+
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
-	
+
+
 	@Override
 	public final void doStart() throws Exception {
 		super.doStart();
@@ -44,7 +44,7 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 		} catch (Exception e) {
 			throw new RuntimeException("Before spring failed", e);
 		}
-		
+
 		Lock writeLock = this.rwLock.writeLock();
 		AbstractXmlApplicationContext ctx = null;
 		try {
@@ -55,16 +55,20 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 			ctx = this.createSpringContext();
 			String[] profiles = System.getProperty(Configuration.PROFILES, Configuration.PROFILES_PRODUCTION).split(",");
 			ctx.getEnvironment().setActiveProfiles(profiles);
-			
+
 			final PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
 			configurer.setProperties(DaemonStarter.getDaemonProperties());
 			ctx.addBeanFactoryPostProcessor(configurer);
-			
+
 			ctx.setConfigLocation(this.getSpringResource());
 			ctx.refresh();
 		} catch (Exception e) {
 			if (ctx != null) {
-				ctx.close();
+				try {
+					ctx.close();
+				} catch (Exception e1) {
+					this.logger.warn("Failed to close context", e1);
+				}
 				ctx = null;
 			}
 			throw new RuntimeException("Spring context failed", e);
@@ -74,44 +78,44 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 			}
 			writeLock.unlock();
 		}
-		
+
 		try {
 			this.doAfterSpringStart();
 		} catch (Exception e) {
 			throw new RuntimeException("After spring failed", e);
 		}
 	}
-	
+
 	protected void doAfterSpringStart() {
 		//
 	}
-	
+
 	protected void doBeforeSpringStart() {
 		//
 	}
-	
+
 	protected void doAfterSpringStop() {
 		//
 	}
-	
+
 	protected void doBeforeSpringStop() {
 		//
 	}
-	
+
 	/**
 	 * @return the created Spring context
 	 */
 	protected AbstractXmlApplicationContext createSpringContext() {
 		return new ClassPathXmlApplicationContext();
 	}
-	
+
 	/**
 	 * @return the name of the Spring resource
 	 */
 	protected String getSpringResource() {
 		return "spring/beans.xml";
 	}
-	
+
 	@Override
 	public final void doStop() throws Exception {
 		try {
@@ -133,7 +137,7 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 		} finally {
 			writeLock.unlock();
 		}
-		
+
 		try {
 			this.doAfterSpringStop();
 		} catch (Exception e) {
@@ -141,7 +145,7 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 		}
 		super.doStop();
 	}
-	
+
 	@Override
 	public Map<String, String> loadProperties() {
 		Map<String, String> props = super.loadProperties();
@@ -150,7 +154,7 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 		}
 		return props;
 	}
-	
+
 	/**
 	 * @return the Spring context
 	 */
@@ -163,5 +167,5 @@ public abstract class SpringDaemonAdapter extends DaemonLifecycleAdapter {
 			readLock.unlock();
 		}
 	}
-	
+
 }
