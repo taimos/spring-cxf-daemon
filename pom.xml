@@ -10,11 +10,11 @@
 	<name>Daemon with Spring and CXF</name>
 	<inceptionYear>2013</inceptionYear>
 	<properties>
-		<org.springframework.version>3.2.9.RELEASE</org.springframework.version>
-		<cxf.version>3.0.0</cxf.version>
+		<org.springframework.version>4.1.0.RELEASE</org.springframework.version>
+		<cxf.version>3.0.1</cxf.version>
 		<jetty.version>8.1.15.v20140411</jetty.version>
-		<jackson.version>2.3.3</jackson.version>
-		<joda.time.version>2.3</joda.time.version>
+		<jackson.version>2.4.2</jackson.version>
+		<joda.time.version>2.4</joda.time.version>
 	</properties>
 	<scm>
 		<connection>scm:git:git@github.com:taimos/spring-cxf-daemon.git</connection>
@@ -26,28 +26,28 @@
 		<dependency>
 			<groupId>de.taimos</groupId>
 			<artifactId>daemon-framework</artifactId>
-			<version>1.6</version>
+			<version>1.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.restdoc</groupId>
 			<artifactId>restdoc-cxf</artifactId>
-			<version>1.7.0</version>
+			<version>1.8</version>
 		</dependency>
 		<dependency>
 			<groupId>de.taimos</groupId>
 			<artifactId>restutils</artifactId>
-			<version>1.5</version>
+			<version>1.6</version>
 		</dependency>
 		<dependency>
 			<groupId>de.taimos</groupId>
 			<artifactId>cxf-jaxrs-renderer</artifactId>
-			<version>1.4</version>
+			<version>1.5</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>17.0</version>
+			<version>18.0</version>
 		</dependency>
 		<dependency>
 			<groupId>joda-time</groupId>
