@@ -10,11 +10,11 @@
 	<name>Daemon with Spring and CXF</name>
 	<inceptionYear>2013</inceptionYear>
 	<properties>
-		<org.springframework.version>4.1.0.RELEASE</org.springframework.version>
-		<cxf.version>3.0.1</cxf.version>
+		<org.springframework.version>4.1.2.RELEASE</org.springframework.version>
+		<cxf.version>3.0.2</cxf.version>
 		<jetty.version>8.1.15.v20140411</jetty.version>
-		<jackson.version>2.4.2</jackson.version>
-		<joda.time.version>2.4</joda.time.version>
+		<jackson.version>2.4.3</jackson.version>
+		<joda.time.version>2.5</joda.time.version>
 	</properties>
 	<scm>
 		<connection>scm:git:git@github.com:taimos/spring-cxf-daemon.git</connection>
