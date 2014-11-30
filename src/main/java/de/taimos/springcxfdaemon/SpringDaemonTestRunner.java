@@ -4,7 +4,10 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -117,6 +120,18 @@ public class SpringDaemonTestRunner extends BlockJUnit4ClassRunner {
 							return cfg.getSpringFile();
 						}
 						
+						@Override
+						protected void doAfterSpringStart() {
+							List<Method> methods = findAfterStartupAnnotatedMethods(SpringDaemonTestRunner.this.getTestClass().getJavaClass());
+							for (Method method : methods) {
+								try {
+									method.invoke(SpringDaemonTestRunner.this.createTest());
+								} catch (Exception e) {
+									throw new RuntimeException("Starting Spring context failed", e);
+								}
+							}
+						}
+						
 					};
 					SpringDaemonTestRunner.this.springTest.start();
 					next.evaluate();
@@ -135,6 +150,20 @@ public class SpringDaemonTestRunner extends BlockJUnit4ClassRunner {
 					cfgClass = this.findConfigAnnotation(clazz.getSuperclass());
 				}
 				return cfgClass;
+			}
+			
+			private List<Method> findAfterStartupAnnotatedMethods(Class<?> clazz) {
+				if (clazz == null) {
+					return null;
+				}
+				List<Method> res = new ArrayList<>();
+				Method[] methods = clazz.getMethods();
+				for (Method method : methods) {
+					if (method.isAnnotationPresent(AfterStartup.class) && (method.getParameterTypes().length == 0)) {
+						res.add(method);
+					}
+				}
+				return res;
 			}
 		};
 	}
@@ -208,5 +237,18 @@ public class SpringDaemonTestRunner extends BlockJUnit4ClassRunner {
 		 * @return the service name
 		 */
 		String svc();
+	}
+	
+	/**
+	 * Copyright 2014 Taimos GmbH<br>
+	 * <br>
+	 * 
+	 * @author thoeger
+	 * 
+	 */
+	@Target({ElementType.METHOD})
+	@Retention(RetentionPolicy.RUNTIME)
+	public static @interface AfterStartup {
+		//
 	}
 }
