@@ -13,8 +13,8 @@
 		<org.springframework.version>4.1.2.RELEASE</org.springframework.version>
 		<cxf.version>3.0.2</cxf.version>
 		<jetty.version>8.1.15.v20140411</jetty.version>
-		<jackson.version>2.4.3</jackson.version>
-		<joda.time.version>2.5</joda.time.version>
+		<jackson.version>2.4.4</jackson.version>
+		<joda.time.version>2.6</joda.time.version>
 	</properties>
 	<scm>
 		<connection>scm:git:git@github.com:taimos/spring-cxf-daemon.git</connection>
