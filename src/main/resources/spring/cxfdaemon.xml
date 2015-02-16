@@ -7,12 +7,7 @@
 
 	<import resource="classpath:spring/daemon.xml" />
 	<import resource="classpath:spring/jetty.xml" />
+	<import resource="classpath:spring/jaxrs-server.xml" />
 
-	<!-- Disable verbose printing of StackTraces -->
-	<bean id="exMapper" class="org.apache.cxf.jaxrs.impl.WebApplicationExceptionMapper">
-		<property name="printStackTrace" value="false" />
-	</bean>
-	<bean id="jsonProvider" class="de.taimos.springcxfdaemon.JacksonProvider" />
-	<bean id="jacksonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider" />
 	<bean id="objectMapper" class="de.taimos.springcxfdaemon.MapperFactory" factory-method="createDefault" />
 </beans>

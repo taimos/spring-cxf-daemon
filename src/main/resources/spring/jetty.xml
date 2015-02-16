@@ -11,11 +11,12 @@
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
 	<httpj:engine-factory id="cxf-engine" bus="cxf">
-		<httpj:engine port="${svc.port:8080}" sendServerVersion="${jetty.sendVersion:false}">
+		<httpj:engine port="${jaxrs.bindport:${svc.port:8080}}" host="${jaxrs.bindhost:0.0.0.0}" sendServerVersion="${jetty.sendVersion:false}">
 			<httpj:threadingParameters minThreads="${jetty.minThreads:5}" maxThreads="${jetty.maxThreads:150}" />
 			<httpj:connector>
 				<bean class="org.eclipse.jetty.server.bio.SocketConnector">
-					<property name="port" value="${svc.port:8080}" />
+					<property name="port" value="${jaxrs.bindport:${svc.port:8080}}" />
+					<property name="host" value="${jaxrs.bindhost:0.0.0.0}" />
 				</bean>
 			</httpj:connector>
 			<httpj:handlers>
