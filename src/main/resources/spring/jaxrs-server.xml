@@ -4,10 +4,21 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 		http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
 
-	<jaxrs:server id="restService" address="http://${jaxrs.bindhost:0.0.0.0}:${jaxrs.bindport:${svc.port:8080}}/${jaxrs.path:}" depends-on="cxf-engine"
-		serviceAnnotation="${jaxrs.annotation}">
+	<jaxrs:server id="restService" address="http://${jaxrs.bindhost:0.0.0.0}:${jaxrs.bindport:${svc.port:8080}}/${jaxrs.path:}"
+		depends-on="cxf-engine" serviceAnnotation="${jaxrs.annotation}">
 		<jaxrs:features>
 			<bean class="de.taimos.springcxfdaemon.monitoring.MonitoringFeature" />
+			<ref bean="restDocFeature" />
 		</jaxrs:features>
 	</jaxrs:server>
+
+	<bean id="classesProvider" class="de.taimos.springcxfdaemon.ServiceAnnotationClassesProvider">
+		<property name="serviceAnnotation" value="${jaxrs.annotation}" />
+	</bean>
+
+	<bean id="restDocFeature" class="org.restdoc.cxf.RestDocFeature" init-method="init">
+		<property name="baseURL" value="${jaxrs.path:}" />
+		<property name="globalHeaderProvider" value="#{getObject('globalHeaderProvider')}" />
+		<property name="classesProvider" ref="classesProvider" />
+	</bean>
 </beans>
