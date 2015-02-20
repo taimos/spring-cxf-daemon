@@ -1,4 +1,4 @@
-package de.taimos.springcxfdaemon;
+package de.taimos.springcxfdaemon.providers;
 
 /*
  * #%L Daemon with Spring and CXF %% Copyright (C) 2013 Taimos GmbH %% Licensed under the Apache License, Version 2.0 (the "License"); you
@@ -28,6 +28,8 @@ import javax.ws.rs.ext.Provider;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+
+import de.taimos.springcxfdaemon.MapperFactory;
 
 /**
  * Copyright 2013 Taimos<br>
