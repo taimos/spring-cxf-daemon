@@ -5,7 +5,7 @@
 		http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
 
 	<jaxrs:server id="restService" address="http://${jaxrs.bindhost:0.0.0.0}:${jaxrs.bindport:${svc.port:8080}}/${jaxrs.path:}"
-		depends-on="cxf-engine" serviceAnnotation="${jaxrs.annotation}">
+		depends-on="cxf-engine" serviceAnnotation="${jaxrs.annotation:de.taimos.springcxfdaemon.JaxRsComponent}">
 		<jaxrs:features>
 			<bean class="de.taimos.springcxfdaemon.monitoring.MonitoringFeature" />
 			<ref bean="restDocFeature" />
@@ -13,7 +13,7 @@
 	</jaxrs:server>
 
 	<bean id="classesProvider" class="de.taimos.springcxfdaemon.ServiceAnnotationClassesProvider">
-		<property name="serviceAnnotation" value="${jaxrs.annotation}" />
+		<property name="serviceAnnotation" value="${jaxrs.annotation:de.taimos.springcxfdaemon.JaxRsComponent}" />
 	</bean>
 
 	<bean id="restDocFeature" class="org.restdoc.cxf.RestDocFeature" init-method="init">

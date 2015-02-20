@@ -24,7 +24,7 @@ public interface SpringCXFProperties {
 	
 	/**
 	 * the service annotation <br>
-	 * <strong>default:</strong> sdf
+	 * <strong>default:</strong> de.taimos.springcxfdaemon.JaxRsComponent
 	 */
 	public static final String JAXRS_ANNOTATION = "jaxrs.annotation";
 	
