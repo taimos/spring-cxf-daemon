@@ -27,11 +27,11 @@ public abstract class APITest {
 	}
 	
 	protected final void assertOK(HttpResponse res) {
-		Assert.assertTrue(WS.isStatusOK(res));
+		Assert.assertTrue(String.format("Expected OK - was %s", WS.getStatus(res)), WS.isStatusOK(res));
 	}
 	
 	protected final void assertStatus(HttpResponse res, Status status) {
-		Assert.assertTrue(WS.getStatus(res) == status.getStatusCode());
+		Assert.assertTrue(String.format("Expected %s - was %s", status.getStatusCode(), WS.getStatus(res)), WS.getStatus(res) == status.getStatusCode());
 	}
 	
 }
