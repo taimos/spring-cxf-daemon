@@ -55,8 +55,12 @@ public abstract class AuthorizationProvider implements ContainerRequestFilter {
 		}
 		
 		if (this.isAuthorizationMandatory()) {
-			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+			this.abortUnauthorized(requestContext);
 		}
+	}
+	
+	protected final void abortUnauthorized(ContainerRequestContext requestContext) {
+		requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
 	}
 	
 	/**
