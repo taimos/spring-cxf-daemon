@@ -43,11 +43,6 @@
 			<artifactId>restutils</artifactId>
 			<version>1.6</version>
 		</dependency>
-		<dependency>
-			<groupId>de.taimos</groupId>
-			<artifactId>cxf-jaxrs-renderer</artifactId>
-			<version>1.6</version>
-		</dependency>
 
 		<dependency>
 			<groupId>com.google.guava</groupId>

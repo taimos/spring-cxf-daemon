@@ -53,6 +53,12 @@ public interface SpringCXFProperties {
 	public static final String JETTY_SESSIONS = "jetty.sessions";
 	
 	/**
+	 * the public base URL of the server<br>
+	 * <strong>default:</strong> http://localhost:&lt;port&gt;
+	 */
+	public static final String SERVER_URL = "server.url";
+	
+	/**
 	 * the class to use as default handler <br>
 	 * <strong>default:</strong> org.eclipse.jetty.server.handler.DefaultHandler
 	 */
