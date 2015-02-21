@@ -8,8 +8,11 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.RedirectionException;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.SecurityContext;
 
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
@@ -46,6 +49,33 @@ public class AbstractAPI implements IContextAware {
 	@Override
 	public void setHttpServletResponse(HttpServletResponse response) {
 		this.response = response;
+	}
+	
+	protected final SecurityContext getSC() {
+		SecurityContext sc = this.context.getSecurityContext();
+		return sc;
+	}
+	
+	protected final void assertSC() {
+		if ((this.getSC() == null) || (this.getSC().getUserPrincipal() == null)) {
+			throw new NotAuthorizedException(Response.status(Status.UNAUTHORIZED).header("X-Error", "Invalid apikey or session").build());
+		}
+	}
+	
+	protected final String getUser() {
+		SecurityContext sc = this.getSC();
+		if ((sc != null) && (sc.getUserPrincipal() != null)) {
+			return sc.getUserPrincipal().getName();
+		}
+		return null;
+	}
+	
+	protected final boolean hasRole(String role) {
+		SecurityContext sc = this.getSC();
+		if (sc != null) {
+			return sc.isUserInRole(role);
+		}
+		return false;
 	}
 	
 	protected final String getFirstHeader(String name) {
