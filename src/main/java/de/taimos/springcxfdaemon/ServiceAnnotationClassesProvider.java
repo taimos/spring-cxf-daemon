@@ -14,17 +14,9 @@ public class ServiceAnnotationClassesProvider implements IClassesProvider {
 	
 	private Class<? extends Annotation> serviceAnnotation;
 	
+	@Autowired
 	private ListableBeanFactory beanFactory;
 	
-	
-	public ListableBeanFactory getBeanFactory() {
-		return this.beanFactory;
-	}
-	
-	@Autowired
-	public void setBeanFactory(ListableBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
-	}
 	
 	public Class<? extends Annotation> getServiceAnnotation() {
 		return this.serviceAnnotation;
