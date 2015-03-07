@@ -10,4 +10,6 @@
 	<import resource="classpath:spring/jaxrs-server.xml" />
 
 	<bean id="objectMapper" class="de.taimos.springcxfdaemon.MapperFactory" factory-method="createDefault" />
+	
+	<bean class="de.taimos.springcxfdaemon.remote.RemoteServiceBeanPostProcessor" />
 </beans>
