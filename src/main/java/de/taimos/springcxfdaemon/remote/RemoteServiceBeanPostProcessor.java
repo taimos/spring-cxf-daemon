@@ -139,13 +139,15 @@ public class RemoteServiceBeanPostProcessor implements InstantiationAwareBeanPos
 	 */
 	private class RemoteServiceElement extends InjectionMetadata.InjectedElement {
 		
-		protected String serviceName;
+		private String serviceName;
+		private String baseURL;
 		
 		
 		public RemoteServiceElement(Member member, AnnotatedElement ae, PropertyDescriptor pd) {
 			super(member, pd);
 			RemoteService resource = ae.getAnnotation(RemoteService.class);
 			this.serviceName = resource.name();
+			this.baseURL = resource.baseURL();
 		}
 		
 		private DependencyDescriptor getDependencyDescriptor() {
@@ -161,11 +163,18 @@ public class RemoteServiceBeanPostProcessor implements InstantiationAwareBeanPos
 			try {
 				value = RemoteServiceBeanPostProcessor.this.beanFactory.resolveDependency(this.getDependencyDescriptor(), requestingBeanName);
 			} catch (NoSuchBeanDefinitionException notFound) {
-				String proto = RemoteServiceBeanPostProcessor.this.resolver.resolveStringValue(String.format("${%s.protocol:http}", this.serviceName));
-				String host = RemoteServiceBeanPostProcessor.this.resolver.resolveStringValue(String.format("${%s.host:localhost}", this.serviceName));
-				String port = RemoteServiceBeanPostProcessor.this.resolver.resolveStringValue(String.format("${%s.port}", this.serviceName));
-				String baseURL = String.format("%s://%s:%s", proto, host, port);
-				value = JAXRSClientFactory.create(baseURL, this.getDependencyDescriptor().getDependencyType());
+				final String url;
+				if ((this.serviceName != null) && !this.serviceName.isEmpty()) {
+					String proto = RemoteServiceBeanPostProcessor.this.resolver.resolveStringValue(String.format("${%s.protocol:http}", this.serviceName));
+					String host = RemoteServiceBeanPostProcessor.this.resolver.resolveStringValue(String.format("${%s.host:localhost}", this.serviceName));
+					String port = RemoteServiceBeanPostProcessor.this.resolver.resolveStringValue(String.format("${%s.port}", this.serviceName));
+					url = String.format("%s://%s:%s", proto, host, port);
+				} else if ((this.baseURL != null) && !this.baseURL.isEmpty()) {
+					url = this.baseURL;
+				} else {
+					throw new RuntimeException("Either service name or base URL must not be empty");
+				}
+				value = JAXRSClientFactory.create(url, this.getDependencyDescriptor().getDependencyType()); // TODO add providers
 			}
 			return value;
 		}
