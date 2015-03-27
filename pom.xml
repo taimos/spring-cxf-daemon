@@ -10,11 +10,11 @@
 	<name>Daemon with Spring and CXF</name>
 	<inceptionYear>2013</inceptionYear>
 	<properties>
-		<org.springframework.version>4.1.4.RELEASE</org.springframework.version>
+		<org.springframework.version>4.1.6.RELEASE</org.springframework.version>
 		<cxf.version>3.0.4</cxf.version>
 		<jetty.version>8.1.15.v20140411</jetty.version>
 		<jackson.version>2.5.1</jackson.version>
-		<joda.time.version>2.6</joda.time.version>
+		<joda.time.version>2.7</joda.time.version>
 	</properties>
 	<scm>
 		<connection>scm:git:git@github.com:taimos/spring-cxf-daemon.git</connection>
@@ -26,12 +26,12 @@
 		<dependency>
 			<groupId>de.taimos</groupId>
 			<artifactId>daemon-framework-spring</artifactId>
-			<version>2.0</version>
+			<version>2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>de.taimos</groupId>
 			<artifactId>daemon-framework-log4j</artifactId>
-			<version>2.0</version>
+			<version>2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.restdoc</groupId>
