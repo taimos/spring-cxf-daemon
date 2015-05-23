@@ -11,8 +11,8 @@
 	<inceptionYear>2013</inceptionYear>
 	<properties>
 		<org.springframework.version>4.1.6.RELEASE</org.springframework.version>
-		<cxf.version>3.0.4</cxf.version>
-		<jetty.version>8.1.15.v20140411</jetty.version>
+		<cxf.version>3.1.0</cxf.version>
+		<jetty.version>9.2.9.v20150224</jetty.version>
 		<jackson.version>2.5.1</jackson.version>
 		<joda.time.version>2.7</joda.time.version>
 	</properties>

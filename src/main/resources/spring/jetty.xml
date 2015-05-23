@@ -1,5 +1,7 @@
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
-	xmlns:context="http://www.springframework.org/schema/context" xmlns:cxf="http://cxf.apache.org/core" xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cxf="http://cxf.apache.org/core" xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration"
 	xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
        http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
@@ -11,17 +13,14 @@
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
 	<httpj:engine-factory id="cxf-engine" bus="cxf">
-		<httpj:engine port="${jaxrs.bindport:${svc.port:8080}}" host="${jaxrs.bindhost:0.0.0.0}" sendServerVersion="${jetty.sendVersion:false}">
-			<httpj:threadingParameters minThreads="${jetty.minThreads:5}" maxThreads="${jetty.maxThreads:150}" />
-			<httpj:connector>
-				<bean class="org.eclipse.jetty.server.bio.SocketConnector">
-					<property name="port" value="${jaxrs.bindport:${svc.port:8080}}" />
-					<property name="host" value="${jaxrs.bindhost:0.0.0.0}" />
-				</bean>
-			</httpj:connector>
+		<httpj:engine port="${jaxrs.bindport:${svc.port:8080}}"
+			host="${jaxrs.bindhost:0.0.0.0}" sendServerVersion="${jetty.sendVersion:false}">
+			<httpj:threadingParameters minThreads="${jetty.minThreads:5}"
+				maxThreads="${jetty.maxThreads:150}" />
 			<httpj:handlers>
 				<ref bean="web-server-context-static" />
-				<bean class="${defaultHandlerClass:org.eclipse.jetty.server.handler.DefaultHandler}" />
+				<bean
+					class="${defaultHandlerClass:org.eclipse.jetty.server.handler.DefaultHandler}" />
 			</httpj:handlers>
 			<httpj:sessionSupport>${jetty.sessions:false}</httpj:sessionSupport>
 		</httpj:engine>
