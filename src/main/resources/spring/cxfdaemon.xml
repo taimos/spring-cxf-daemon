@@ -12,4 +12,8 @@
 	<bean id="objectMapper" class="de.taimos.springcxfdaemon.MapperFactory" factory-method="createDefault" />
 	
 	<bean class="de.taimos.springcxfdaemon.remote.RemoteServiceBeanPostProcessor" />
+
+	<beans profile="test">	
+		<bean class="de.taimos.springcxfdaemon.test.TestProxyBeanPostProcessor" />
+	</beans>
 </beans>

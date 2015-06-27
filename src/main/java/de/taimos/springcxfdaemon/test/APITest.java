@@ -3,6 +3,7 @@ package de.taimos.springcxfdaemon.test;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.http.HttpResponse;
@@ -40,6 +41,14 @@ public abstract class APITest {
 	
 	protected final void assertStatus(HttpResponse res, Status status) {
 		Assert.assertTrue(String.format("Expected %s - was %s", status.getStatusCode(), WS.getStatus(res)), WS.getStatus(res) == status.getStatusCode());
+	}
+	
+	protected final void assertOK(Response res) {
+		Assert.assertTrue(String.format("Expected OK - was %s", res.getStatus()), (res.getStatus() >= 200) && (res.getStatus() <= 299));
+	}
+	
+	protected final void assertStatus(Response res, Status status) {
+		Assert.assertTrue(String.format("Expected %s - was %s", status.getStatusCode(), res.getStatus()), res.getStatus() == status.getStatusCode());
 	}
 	
 	protected <T> T read(HttpResponse res, Class<T> clazz) {
