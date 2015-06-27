@@ -19,6 +19,7 @@
 				maxThreads="${jetty.maxThreads:150}" />
 			<httpj:handlers>
 				<ref bean="web-server-context-static" />
+				<bean class="de.taimos.springcxfdaemon.websocket.WebSocketContextHandler" />
 				<bean
 					class="${defaultHandlerClass:org.eclipse.jetty.server.handler.DefaultHandler}" />
 			</httpj:handlers>
