@@ -8,21 +8,19 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.InternalServerErrorException;
-import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.RedirectionException;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.google.common.base.Charsets;
 
-import de.taimos.restutils.RESTAssert;
-import de.taimos.springcxfdaemon.monitoring.InvocationInstance;
+import de.taimos.springcxfdaemon.security.SecurityContextBean;
 
 public class AbstractAPI implements IContextAware {
 	
@@ -32,6 +30,9 @@ public class AbstractAPI implements IContextAware {
 	
 	@Value("${server.url:http://localhost:${jaxrs.bindport:${svc.port:8080}}}")
 	private String serverURL;
+	
+	@Autowired
+	protected SecurityContextBean security;
 	
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -51,31 +52,29 @@ public class AbstractAPI implements IContextAware {
 		this.response = response;
 	}
 	
+	@Deprecated
 	protected final SecurityContext getSC() {
-		SecurityContext sc = this.context.getSecurityContext();
-		return sc;
+		return this.security.getSC();
 	}
 	
+	@Deprecated
 	protected final void assertSC() {
-		if ((this.getSC() == null) || (this.getSC().getUserPrincipal() == null)) {
-			throw new NotAuthorizedException(Response.status(Status.UNAUTHORIZED).header("X-Error", "Invalid apikey or session").build());
-		}
+		this.security.assertSC();
 	}
 	
+	@Deprecated
 	protected final String getUser() {
-		SecurityContext sc = this.getSC();
-		if ((sc != null) && (sc.getUserPrincipal() != null)) {
-			return sc.getUserPrincipal().getName();
-		}
-		return null;
+		return this.security.getUser();
 	}
 	
+	@Deprecated
 	protected final boolean hasRole(String role) {
-		SecurityContext sc = this.getSC();
-		if (sc != null) {
-			return sc.isUserInRole(role);
-		}
-		return false;
+		return this.security.hasRole(role);
+	}
+	
+	@Deprecated
+	protected final UUID requestId() {
+		return this.security.requestId();
 	}
 	
 	protected final String getFirstHeader(String name) {
@@ -92,12 +91,6 @@ public class AbstractAPI implements IContextAware {
 	
 	protected final void redirect(String uriString) {
 		throw new RedirectionException(Status.SEE_OTHER, URI.create(uriString));
-	}
-	
-	protected final UUID requestId() {
-		final InvocationInstance ii = this.context.getContent(InvocationInstance.class);
-		RESTAssert.assertNotNull(ii, Status.INTERNAL_SERVER_ERROR);
-		return ii.getMessageId();
 	}
 	
 	protected String getCurrentURIEncoded() {
