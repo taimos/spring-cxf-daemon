@@ -6,7 +6,9 @@ package de.taimos.springcxfdaemon.providers;
 import java.io.IOException;
 import java.security.Principal;
 
+import javax.annotation.Priority;
 import javax.security.auth.Subject;
+import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
@@ -24,12 +26,19 @@ import de.taimos.httputils.WSConstants;
 
 /**
  * @author thoeger
- *
+ * 		
  *         Copyright 2012, Cinovo AG
- *
+ * 		
  */
 @Provider
+@Priority(Priorities.AUTHENTICATION)
 public abstract class AuthorizationProvider implements ContainerRequestFilter {
+	
+	/**
+	 * UserName used for anonymous {@link SecurityContext}
+	 */
+	public static final String ANONYMOUS_USER = "ANONYMOUS";
+	
 	
 	@Override
 	public final void filter(ContainerRequestContext requestContext) throws IOException {
@@ -108,6 +117,16 @@ public abstract class AuthorizationProvider implements ContainerRequestFilter {
 			}
 		}
 		return new DefaultSecurityContext(principal, subject);
+	}
+	
+	/**
+	 * Create a {@link SecurityContext} for an unauthenticated user to return to the provider
+	 * 
+	 * @param roles the roles of the user
+	 * @return the {@link SecurityContext}
+	 */
+	protected static SecurityContext createAnonymousSC(String... roles) {
+		return AuthorizationProvider.createSC(AuthorizationProvider.ANONYMOUS_USER, roles);
 	}
 	
 }

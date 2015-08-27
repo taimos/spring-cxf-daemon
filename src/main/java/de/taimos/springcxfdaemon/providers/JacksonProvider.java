@@ -17,7 +17,9 @@ import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
+import javax.annotation.Priority;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.Priorities;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -36,9 +38,10 @@ import de.taimos.springcxfdaemon.MapperFactory;
  * <br>
  * 
  * @author hoegertn
- * 
+ * 		
  */
 @Provider
+@Priority(Priorities.ENTITY_CODER)
 @Consumes(MediaType.WILDCARD)
 @Produces(MediaType.WILDCARD)
 public class JacksonProvider implements MessageBodyReader<Object>, MessageBodyWriter<Object> {

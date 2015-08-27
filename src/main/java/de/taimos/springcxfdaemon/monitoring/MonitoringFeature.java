@@ -22,7 +22,7 @@ import org.slf4j.MDC;
  * <br>
  * 
  * @author Thorsten Hoeger
- * 
+ * 		
  */
 public class MonitoringFeature extends AbstractFeature {
 	
@@ -90,7 +90,7 @@ public class MonitoringFeature extends AbstractFeature {
 	}
 	
 	void invokeMessage(Message message) {
-		InvocationInstance i = message.getContent(InvocationInstance.class);
+		InvocationInstance i = message.getExchange().get(InvocationInstance.class);
 		final Method method = (Method) message.get(MonitoringFeature.CXF_METHOD);
 		if ((method != null) && (i != null)) {
 			i.setCalledMethod(method);

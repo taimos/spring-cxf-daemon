@@ -1,5 +1,7 @@
 package de.taimos.springcxfdaemon.providers;
 
+import javax.annotation.Priority;
+import javax.ws.rs.Priorities;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -9,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Provider
+@Priority(Priorities.ENTITY_CODER)
 public class WebExceptionMapper implements ExceptionMapper<WebApplicationException> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebExceptionMapper.class);
