@@ -40,13 +40,6 @@ import org.springframework.stereotype.Component;
 import de.taimos.restutils.RESTAssert;
 import de.taimos.springcxfdaemon.monitoring.InvocationInstance;
 
-/**
- * Copyright 2015 Taimos GmbH<br>
- * <br>
- *
- * @author thoeger
- * 		
- */
 @Component
 public class SecurityContextBean {
 	

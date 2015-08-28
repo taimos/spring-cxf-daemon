@@ -38,13 +38,6 @@ import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-/**
- * Copyright 2015 Taimos GmbH<br>
- * <br>
- * 
- * @author thoeger
- * 		
- */
 public class WebSocketContextHandler extends ServletContextHandler {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketContextHandler.class);

@@ -40,13 +40,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Joiner;
 
-/**
- * Copyright 2015 Taimos GmbH<br>
- * <br>
- *
- * @author thoeger
- * 		
- */
 @Provider
 @Priority(Priorities.AUTHORIZATION)
 public class RolesFilter implements ContainerRequestFilter {

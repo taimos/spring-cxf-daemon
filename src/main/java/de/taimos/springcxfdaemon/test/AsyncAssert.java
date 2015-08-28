@@ -27,13 +27,9 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Assert;
 
 /**
- * Copyright 2015 Taimos GmbH<br>
- * <br>
- *
  * Assert tooling for asynchronous callbacks
  *
  * @author thoeger
- * 		
  */
 public class AsyncAssert {
 	

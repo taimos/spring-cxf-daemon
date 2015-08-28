@@ -36,14 +36,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
-/**
- * 
- * Copyright 2013 Hoegernet<br>
- * <br>
- * 
- * @author Thorsten Hoeger
- * 		
- */
 public class MonitoringFeature extends AbstractFeature {
 	
 	private static final String MDC_METHOD = "calledMethod";

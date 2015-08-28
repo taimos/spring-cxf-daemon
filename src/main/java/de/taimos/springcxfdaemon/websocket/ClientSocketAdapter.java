@@ -35,13 +35,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.taimos.springcxfdaemon.MapperFactory;
 
 /**
- * Copyright 2015 Taimos GmbH<br>
- * <br>
- *
  * Socket adapter for clients
  *
  * @author thoeger
- * 		
  */
 public class ClientSocketAdapter extends WebSocketAdapter {
 	

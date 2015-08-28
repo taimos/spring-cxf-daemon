@@ -44,12 +44,6 @@ import org.apache.cxf.security.SecurityContext;
 
 import de.taimos.httputils.WSConstants;
 
-/**
- * @author thoeger
- * 		
- *         Copyright 2012, Cinovo AG
- * 		
- */
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public abstract class AuthorizationProvider implements ContainerRequestFilter {

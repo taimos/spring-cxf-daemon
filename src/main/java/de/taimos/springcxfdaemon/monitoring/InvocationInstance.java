@@ -26,14 +26,6 @@ package de.taimos.springcxfdaemon.monitoring;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
-/**
- * 
- * Copyright 2013 Hoegernet<br>
- * <br>
- * 
- * @author Thorsten Hoeger
- * 		
- */
 public class InvocationInstance {
 	
 	private final UUID messageId;
