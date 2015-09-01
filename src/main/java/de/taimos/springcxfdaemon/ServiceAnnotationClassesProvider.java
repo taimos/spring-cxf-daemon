@@ -26,11 +26,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.restdoc.cxf.provider.IClassesProvider;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class ServiceAnnotationClassesProvider implements IClassesProvider {
+public class ServiceAnnotationClassesProvider {
 	
 	private Class<? extends Annotation> serviceAnnotation;
 	
@@ -46,7 +45,6 @@ public class ServiceAnnotationClassesProvider implements IClassesProvider {
 		this.serviceAnnotation = serviceAnnotation;
 	}
 	
-	@Override
 	public Class<?>[] getClasses() {
 		Map<String, Object> beansWithAnnotation = this.beanFactory.getBeansWithAnnotation(this.serviceAnnotation);
 		List<Class<?>> classes = new ArrayList<>();

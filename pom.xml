@@ -34,11 +34,6 @@
 			<version>2.3</version>
 		</dependency>
 		<dependency>
-			<groupId>org.restdoc</groupId>
-			<artifactId>restdoc-cxf</artifactId>
-			<version>1.10</version>
-		</dependency>
-		<dependency>
 			<groupId>de.taimos</groupId>
 			<artifactId>restutils</artifactId>
 			<version>1.7</version>
