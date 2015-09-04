@@ -17,10 +17,14 @@
   limitations under the License.
   #L%
   -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
 	xmlns:cxf="http://cxf.apache.org/core"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
 		http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
 
 	<jaxrs:server id="restService" address="http://${jaxrs.bindhost:0.0.0.0}:${jaxrs.bindport:${svc.port:8080}}/${jaxrs.path:}"
@@ -33,4 +37,7 @@
 	<bean id="classesProvider" class="de.taimos.springcxfdaemon.ServiceAnnotationClassesProvider">
 		<property name="serviceAnnotation" value="${jaxrs.annotation:de.taimos.springcxfdaemon.JaxRsComponent}" />
 	</bean>
+	
+	<!-- Swagger beans -->
+	<context:component-scan base-package="de.taimos.springcxfdaemon.swagger" />
 </beans>
