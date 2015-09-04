@@ -38,6 +38,7 @@
 				maxThreads="${jetty.maxThreads:150}" />
 			<httpj:handlers>
 				<ref bean="web-server-context-static" />
+				<ref bean="web-server-context-swagger" />
 				<bean class="de.taimos.springcxfdaemon.websocket.WebSocketContextHandler" />
 				<bean
 					class="${defaultHandlerClass:org.eclipse.jetty.server.handler.DefaultHandler}" />
@@ -51,6 +52,19 @@
 		<property name="handler">
 			<bean class="org.eclipse.jetty.server.handler.ResourceHandler">
 				<property name="resourceBase" value="./static" />
+			</bean>
+		</property>
+	</bean>
+	<bean name="web-server-context-swagger" class="org.eclipse.jetty.server.handler.ContextHandler">
+		<property name="contextPath" value="/swagger-ui" />
+		<property name="handler">
+			<bean class="org.eclipse.jetty.server.handler.ResourceHandler">
+				<property name="baseResource">
+					<bean class="org.eclipse.jetty.util.resource.Resource"
+						factory-method="newClassPathResource">
+						<constructor-arg value="/swagger" />
+					</bean>
+				</property>
 			</bean>
 		</property>
 	</bean>
