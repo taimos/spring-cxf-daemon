@@ -42,6 +42,7 @@ import org.apache.cxf.jaxrs.utils.JAXRSUtils;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.security.SecurityContext;
 
+import de.taimos.daemon.DaemonProperties;
 import de.taimos.httputils.WSConstants;
 
 @Provider
@@ -83,7 +84,16 @@ public abstract class AuthorizationProvider implements ContainerRequestFilter {
 	}
 	
 	protected final void abortUnauthorized(ContainerRequestContext requestContext) {
-		requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+		if (this.sendWWWAuthenticate()) {
+			String realm = String.format("Basic realm=\"%s\"", System.getProperty(DaemonProperties.SERVICE_NAME));
+			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).header(HttpHeaders.WWW_AUTHENTICATE, realm).build());
+		} else {
+			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+		}
+	}
+	
+	protected boolean sendWWWAuthenticate() {
+		return false;
 	}
 	
 	/**
