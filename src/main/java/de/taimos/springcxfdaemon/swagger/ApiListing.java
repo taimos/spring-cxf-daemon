@@ -67,6 +67,7 @@ public class ApiListing {
 			
 			Reader reader = new Reader(null, rc);
 			Swagger swagger = reader.read(classes);
+			swagger.basePath(System.getProperty("jaxrs.path"));
 			if (this.config != null) {
 				swagger = this.config.configure(swagger);
 			}

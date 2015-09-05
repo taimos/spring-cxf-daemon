@@ -27,7 +27,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
 		http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
 
-	<jaxrs:server id="restService" address="http://${jaxrs.bindhost:0.0.0.0}:${jaxrs.bindport:${svc.port:8080}}/${jaxrs.path:}"
+	<jaxrs:server id="restService" address="http://${jaxrs.bindhost:0.0.0.0}:${jaxrs.bindport:${svc.port:8080}}${jaxrs.path:}"
 		depends-on="cxf-engine" serviceAnnotation="${jaxrs.annotation:de.taimos.springcxfdaemon.JaxRsComponent}">
 		<jaxrs:features>
 			<bean class="de.taimos.springcxfdaemon.monitoring.MonitoringFeature" />

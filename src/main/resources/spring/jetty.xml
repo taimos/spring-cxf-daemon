@@ -56,7 +56,7 @@
 		</property>
 	</bean>
 	<bean name="web-server-context-swagger" class="org.eclipse.jetty.server.handler.ContextHandler">
-		<property name="contextPath" value="/swagger-ui" />
+		<property name="contextPath" value="${jaxrs.path:}/swagger-ui" />
 		<property name="handler">
 			<bean class="org.eclipse.jetty.server.handler.ResourceHandler">
 				<property name="baseResource">
