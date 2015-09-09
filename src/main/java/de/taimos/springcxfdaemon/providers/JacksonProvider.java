@@ -53,10 +53,6 @@ public class JacksonProvider implements MessageBodyReader<Object>, MessageBodyWr
 	
 	@Override
 	public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-		if (mediaType.getSubtype().equals("x-restdoc+json")) {
-			// RestDoc is already marshalled
-			return false;
-		}
 		if (mediaType.getSubtype().equals("json") || mediaType.getSubtype().endsWith("+json")) {
 			return true;
 		}
@@ -75,10 +71,6 @@ public class JacksonProvider implements MessageBodyReader<Object>, MessageBodyWr
 	
 	@Override
 	public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-		if (mediaType.getSubtype().equals("x-restdoc+json")) {
-			// RestDoc is already unmarshalled
-			return false;
-		}
 		if (mediaType.getSubtype().equals("json") || mediaType.getSubtype().endsWith("+json")) {
 			return true;
 		}
