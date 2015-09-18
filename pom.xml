@@ -43,6 +43,13 @@
 			<groupId>io.swagger</groupId>
 			<artifactId>swagger-jaxrs</artifactId>
 			<version>1.5.3</version>
+			<exclusions>
+				<!-- This conflicts with JAX-RS 2.0 -->
+				<exclusion>
+					<artifactId>jsr311-api</artifactId>
+					<groupId>javax.ws.rs</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
