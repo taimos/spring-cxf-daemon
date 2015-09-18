@@ -35,12 +35,11 @@ import javax.ws.rs.core.SecurityContext;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.google.common.base.Charsets;
 
-import de.taimos.springcxfdaemon.security.SecurityContextBean;
+import de.taimos.springcxfdaemon.security.SecurityContextUtil;
 
 public class AbstractAPI implements IContextAware {
 	
@@ -50,9 +49,6 @@ public class AbstractAPI implements IContextAware {
 	
 	@Value("${server.url:http://localhost:${jaxrs.bindport:${svc.port:8080}}}")
 	private String serverURL;
-	
-	@Autowired
-	protected SecurityContextBean security;
 	
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -74,27 +70,27 @@ public class AbstractAPI implements IContextAware {
 	
 	@Deprecated
 	protected final SecurityContext getSC() {
-		return this.security.getSC();
+		return SecurityContextUtil.getSC();
 	}
 	
 	@Deprecated
 	protected final void assertSC() {
-		this.security.assertSC();
+		SecurityContextUtil.assertSC();
 	}
 	
 	@Deprecated
 	protected final String getUser() {
-		return this.security.getUser();
+		return SecurityContextUtil.getUser();
 	}
 	
 	@Deprecated
 	protected final boolean hasRole(String role) {
-		return this.security.hasRole(role);
+		return SecurityContextUtil.hasRole(role);
 	}
 	
 	@Deprecated
 	protected final UUID requestId() {
-		return this.security.requestId();
+		return SecurityContextUtil.requestId();
 	}
 	
 	protected final String getFirstHeader(String name) {

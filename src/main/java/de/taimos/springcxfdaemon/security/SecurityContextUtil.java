@@ -35,58 +35,56 @@ import org.apache.cxf.jaxrs.ext.MessageContextImpl;
 import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import de.taimos.restutils.RESTAssert;
 import de.taimos.springcxfdaemon.monitoring.InvocationInstance;
 
-@Component
-public class SecurityContextBean {
+public class SecurityContextUtil {
 	
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	
-	public final SecurityContext getSC() {
-		return this.getContext().getSecurityContext();
+	public static final SecurityContext getSC() {
+		return SecurityContextUtil.getContext().getSecurityContext();
 	}
 	
-	public final void assertSC() {
-		if ((this.getSC() == null) || (this.getSC().getUserPrincipal() == null)) {
+	public static final void assertSC() {
+		if ((SecurityContextUtil.getSC() == null) || (SecurityContextUtil.getSC().getUserPrincipal() == null)) {
 			throw new NotAuthorizedException(Response.status(Status.UNAUTHORIZED).entity("Invalid credentials or session").build());
 		}
 	}
 	
-	public final void assertLoggedIn() {
-		this.assertSC();
+	public static final void assertLoggedIn() {
+		SecurityContextUtil.assertSC();
 	}
 	
-	public final String getUser() {
-		SecurityContext sc = this.getSC();
+	public static final String getUser() {
+		SecurityContext sc = SecurityContextUtil.getSC();
 		if ((sc != null) && (sc.getUserPrincipal() != null)) {
 			return sc.getUserPrincipal().getName();
 		}
 		return null;
 	}
 	
-	public final boolean hasRole(String role) {
-		SecurityContext sc = this.getSC();
+	public static final boolean hasRole(String role) {
+		SecurityContext sc = SecurityContextUtil.getSC();
 		if (sc != null) {
 			return sc.isUserInRole(role);
 		}
 		return false;
 	}
 	
-	public final UUID requestId() {
-		final InvocationInstance ii = this.getContext().getContent(InvocationInstance.class);
+	public static final UUID requestId() {
+		final InvocationInstance ii = SecurityContextUtil.getContext().getContent(InvocationInstance.class);
 		RESTAssert.assertNotNull(ii, Status.INTERNAL_SERVER_ERROR);
 		return ii.getMessageId();
 	}
 	
-	public final boolean isLoggedIn() {
-		return this.getUser() != null;
+	public static final boolean isLoggedIn() {
+		return SecurityContextUtil.getUser() != null;
 	}
 	
-	private MessageContext getContext() {
+	private static MessageContext getContext() {
 		return new MessageContextImpl(PhaseInterceptorChain.getCurrentMessage());
 	}
 }
