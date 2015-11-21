@@ -26,7 +26,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import de.taimos.daemon.DaemonProperties;
 import de.taimos.springcxfdaemon.JaxRsComponent;
+import de.taimos.springcxfdaemon.SpringCXFProperties;
+import de.taimos.springcxfdaemon.URLUtils;
+import de.taimos.springcxfdaemon.URLUtils.SplitURL;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.config.FilterFactory;
 import io.swagger.config.SwaggerConfig;
@@ -35,6 +39,8 @@ import io.swagger.core.filter.SwaggerSpecFilter;
 import io.swagger.jaxrs.Reader;
 import io.swagger.jaxrs.config.DefaultReaderConfig;
 import io.swagger.jaxrs.listing.ApiListingResource;
+import io.swagger.models.Info;
+import io.swagger.models.Scheme;
 import io.swagger.models.Swagger;
 import io.swagger.util.Yaml;
 
@@ -67,13 +73,29 @@ public class ApiListing {
 			
 			Reader reader = new Reader(null, rc);
 			Swagger swagger = reader.read(classes);
-			swagger.basePath(System.getProperty("jaxrs.path"));
+			this.configureServerURL(swagger);
+			swagger.info(this.createInfo());
 			if (this.config != null) {
 				swagger = this.config.configure(swagger);
 			}
 			this.swaggerCache.compareAndSet(null, swagger);
 		}
 		return this.swaggerCache.get();
+	}
+	
+	private void configureServerURL(Swagger swagger) {
+		SplitURL split = URLUtils.splitURL(System.getProperty(SpringCXFProperties.SERVER_URL, "localhost"));
+		swagger.scheme(Scheme.forValue(split.getScheme()));
+		swagger.host(split.getHost() + ":" + split.getPort());
+		swagger.basePath(System.getProperty(SpringCXFProperties.JAXRS_PATH));
+	}
+	
+	private Info createInfo() {
+		Info info = new Info();
+		info.title(System.getProperty(DaemonProperties.SERVICE_NAME, ""));
+		String version = this.getClass().getPackage().getImplementationVersion();
+		info.version(version != null ? version : "0.0");
+		return info;
 	}
 	
 	private Swagger process(HttpHeaders headers, UriInfo uriInfo) {
